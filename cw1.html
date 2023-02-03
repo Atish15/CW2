@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cart</title>
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link rel="stylesheet" href="cw1.css" >
+
+</head>
+<body>
+
+
+<div id="app">
+
+    <button v-on:click="cartout" :disabled="cart.length<=0"> <img src="images/trolley.png" width="40" height="40" >Cartout</button>
+    <div v-if="cartpage==false">
+        <h>SORT BY</h> <br>
+    <label><input type="checkbox" v-model="subject"  value=subject> Subject</label><br>
+    <label><input type="checkbox" v-model="location" value=location> Location</label><br>
+    <label><input type="checkbox" v-model="price" value=price> Price</label><br>
+    <label><input type="checkbox" v-model="availability" value=availability> Availability</label>
+    <br>
+    <br>
+    <label><input type="checkbox" v-model="ascending" value=ascending v-on:change= "tosort"> Ascending</label><br>
+    <label><input type="checkbox" v-model="descending" value=descending v-on:change="tosort"> Descending</label><br>
+    <input v-model="searchtext" type="text" placeholder="SEARCH" value="searchtext" v-on:input="show">
+
+       <div v-if="resultpage==false" v-for="prod in product" id="learn" >
+
+       <h2 v-text="prod.subject">Subject: </h2>
+       <p>Location:{{ prod.location }}</p>
+       <p>Description: {{ prod.description }}</p>
+       <p>Price: {{ prod.price }}</p>
+       <p>Spaces: <span v-if="prod.numberOfSpaces  > 0">Only
+                      {{prod.numberOfSpaces}} left!</span>
+           <span v-else-if="prod.numberOfSpaces==0">All out!</span>
+       </p>
+
+
+       <button type="button" v-on:click="addClass(prod)" v-bind:disabled="canAddClass" class="btn btn-dark btn-sm px-4 mt-3">
+           Add to cart
+       </button>
+
+
+               <img id="yes" v-bind:src="prod.image" width="40" height="40"/></div>
+
+    </div>
+       <div id="learn" v-for="prod in result" v-if="resultpage==true && cartpage==false">
+
+           <h2 v-text="prod.subject">Subject: </h2>
+           <p>Location:{{ prod.location }}</p>
+           <p>Description: {{ prod.description }}</p>
+           <p>Price: {{ prod.price }}</p>
+           <p>Spaces: <span v-if="prod.numberOfSpaces> 0">Only
+                      {{prod.numberOfSpaces}} left!</span>
+               <span v-else-if="prod.numberOfSpaces=== 0">All out!</span>
+           </p>
+           <img v-bind:src="prod.image" width="40" height="40" />
+
+           <button type="button" v-on:click="addClass (prod)" v-bind:disabled="canAddClass" class="btn btn-dark btn-sm px-4 mt-3">
+               Add to cart
+           </button>
+       </div>
+    <div id="learn" v-for="prod in cartanother" v-if="resultpage==false && cartpage==true">
+
+        <h2 v-text="prod.subject">Subject: </h2>
+        <p>Location:{{ prod.location }}</p>
+        <p>Description: {{ prod.description }}</p>
+        <p>Price: {{ prod.price }}</p>
+        <p>Selected: {{cartItemCount(prod)}}
+        </p>
+        <img v-bind:src="prod.image" width="40" height="40" />
+
+        <button type="button" v-on:click="remove (prod)" class="btn btn-dark btn-sm px-4 mt-3">
+            Remove
+        </button>
+    </div>
+
+    <div v-if="resultpage==false && cartpage==true">
+        <h1>CHECKOUT</h1>
+
+            <input  v-model="name" type="text" placeholder="Please enter your name" value=name v-on:input="infocheck">
+            <input v-model="phonenumber" type="text" placeholder="Please enter your phone number" value=phonenumber v-on:input= "infocheck">
+
+            <button v-on:click="finishcart" :disabled="!infocheckresult">Checkout</button>
+
+    </div>
+    <div></div>
+
+   </div>
+
+   <script type="module" src="core.js">
+   </script>
+
+</body>
+</html>
